@@ -1,0 +1,18 @@
+select * from (select session, get_json_object(json, '$.m1') as m11, get_json_object(json, '$.m2') as m12, get_json_object(json, '$.m3') as m13,
+get_json_object(json, '$.m4') as m14, get_json_object(json, '$.m5') as m15 from v1new) a
+full outer join 
+(select 
+session, 
+get_json_object(json, '$.m1') as m21, get_json_object(json, '$.m2') as m22, get_json_object(json, '$.m3') as m23,
+get_json_object(json, '$.m4') as m24, get_json_object(json, '$.m5') as m25
+from v2new) b
+on a.session = b.session
+where ((((m11 - m21) / m21) * 100 > 10) or (((m21 - m11) / m21) * 100 > 10))
+or
+((((m12 - m22) / m22) * 100 > 10) or (((m22 - m12) / m22) * 100 > 10))
+or
+((((m13 - m23) / m23) * 100 > 10) or (((m23 - m13) / m23) * 100 > 10))
+or
+((((m14 - m24) / m24) * 100 > 10) or (((m24 - m14) / m24) * 100 > 10))
+or
+((((m15 - m25) / m25) * 100 > 10) or (((m25 - m15) / m25) * 100 > 10));
